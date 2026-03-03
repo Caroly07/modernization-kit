@@ -1,0 +1,12 @@
+{
+  "name": "Human Review Checkpoint",
+  "version": "1.0.0",
+  "description": "After completing a spec task, remind the AI to pause for human review before proceeding to the next phase",
+  "when": {
+    "type": "postTaskExecution"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "A task was just completed. Before proceeding to the next task or phase, check: does this task's output need human review? If the task produced a deliverable document (DISCOVERY_SUMMARY.md, ASSESSMENT.md, PAIN_POINTS.md, TARGET_ARCHITECTURE.md, MODERNIZATION_PLAN.md, BUSINESS_CASE.md, etc.), STOP and ask the user to review it. Summarize what was produced and what specific feedback you need. Do not proceed to the next phase until the human confirms the current deliverable is acceptable."
+  }
+}

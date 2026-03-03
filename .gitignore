@@ -1,0 +1,22 @@
+# Output documents (generated during the process, not part of the template)
+DISCOVERY_SUMMARY.md
+ASSESSMENT.md
+CONSOLIDATED_ASSESSMENT.md
+PAIN_POINTS.md
+TARGET_ARCHITECTURE.md
+MODERNIZATION_PLAN.md
+BUSINESS_CASE.md
+DISASTER_RECOVERY_PLAN.md
+STAFFING_RECOMMENDATION.md
+SECURITY_REMEDIATION.md
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files (other than .kiro which IS the product)
+.vscode/
+.idea/
+
+# Don't ignore .kiro - that's the whole point
+!.kiro/
