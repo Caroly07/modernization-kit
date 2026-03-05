@@ -1,6 +1,6 @@
-# Legacy Application Modernization Kit for Kiro
+# Legacy Application Modernization Kit for AI IDEs
 
-An open-source, AI-assisted methodology for modernizing legacy applications — built for [Kiro](https://kiro.dev) and [Claude](https://anthropic.com). Drop this into your Kiro workspace alongside your legacy codebase and let the structured process guide you from assessment to actionable plan.
+An open-source, AI-assisted methodology for modernizing legacy applications — built for AI IDEs like [Kiro](https://kiro.dev), [GitHub Copilot](https://github.com/features/copilot) (VS Code), [Claude Code](https://docs.anthropic.com/en/docs/claude-code), and [Codex](https://openai.com/index/codex/). Drop this into your workspace alongside your legacy codebase and let the structured process guide you from assessment to actionable plan.
 
 Designed for multi-application landscapes. Assess each application individually, then analyze them as a whole — shared databases, overlapping business logic, hidden coupling, and consolidation opportunities only become visible when you look at the full picture.
 
@@ -8,7 +8,7 @@ Created by [Burly Mingo LLC](https://burlymingo.com).
 
 ## What This Is
 
-A Kiro workspace template that packages a complete modernization methodology as steering files, specs, and hooks. It guides an AI assistant (and the human domain expert working with it) through a structured process that produces real engineering deliverables:
+A workspace template that packages a complete modernization methodology with native support for Kiro (steering/specs/hooks), GitHub Copilot (custom instructions/prompt files), Claude Code (CLAUDE.md/slash commands), and Codex (system instructions/runbooks). It guides an AI assistant (and the human domain expert working with it) through a structured process that produces real engineering deliverables:
 
 - Per-application architecture assessments with 7 R's classification
 - Consolidated cross-application analysis (shared data sources, hidden coupling, consolidation opportunities)
@@ -56,11 +56,15 @@ The methodology has 6 phases, each producing a specific deliverable with a human
 # From your project's root directory (where your legacy code lives)
 git clone https://github.com/Burly-Mingo/modernization-kit.git /tmp/mod-kit
 cp -r /tmp/mod-kit/.kiro .
+cp -r /tmp/mod-kit/.codex .
+cp -r /tmp/mod-kit/.claude .
+cp -r /tmp/mod-kit/.github .
+cp /tmp/mod-kit/CLAUDE.md .
 cp /tmp/mod-kit/MODERNIZATION_METHODOLOGY.md .
 rm -rf /tmp/mod-kit
 ```
 
-Then open the workspace in Kiro. That's it. The steering files activate automatically and the specs appear in the Kiro spec panel.
+Then open the workspace in your AI IDE. For Kiro, the steering files activate automatically and specs appear in the spec panel. For VS Code with Copilot, the custom instructions load automatically. For Claude Code, `CLAUDE.md` loads automatically and slash commands are available via `/phase-*`. For Codex, load the system instructions manually.
 
 **Multi-application workspace (optimal):**
 
@@ -69,6 +73,10 @@ Then open the workspace in Kiro. That's it. The steering files activate automati
 mkdir my-modernization && cd my-modernization
 git clone https://github.com/Burly-Mingo/modernization-kit.git /tmp/mod-kit
 cp -r /tmp/mod-kit/.kiro .
+cp -r /tmp/mod-kit/.codex .
+cp -r /tmp/mod-kit/.claude .
+cp -r /tmp/mod-kit/.github .
+cp /tmp/mod-kit/CLAUDE.md .
 cp /tmp/mod-kit/MODERNIZATION_METHODOLOGY.md .
 rm -rf /tmp/mod-kit
 
@@ -91,7 +99,7 @@ cd my-modernization
 # Open my-modernization/ in Kiro
 ```
 
-> **Don't** clone this repo as a subfolder inside another workspace (e.g., `my-project/modernization-kit/`). The `.kiro/` folder would be nested and Kiro won't detect it. Always copy the `.kiro/` folder to the root of whatever directory you open in Kiro.
+> **Don't** clone this repo as a subfolder inside another workspace (e.g., `my-project/modernization-kit/`). The `.kiro/` folder would be nested and Kiro won't detect it. Always copy the `.kiro/`, `.codex/`, `.claude/`, and `.github/` folders (plus `CLAUDE.md`) to the root of whatever directory you open in your IDE.
 
 **What happens when you open in Kiro:**
 
@@ -100,10 +108,22 @@ cd my-modernization
 3. The 3 hooks in `.kiro/hooks/` provide guardrails — human review reminders, open question tracking, and compliance consistency checks
 4. Start a conversation and open the Phase 0 spec. The AI will begin the Discovery Interview.
 
+**What happens when you open in VS Code (Copilot):**
+
+1. `.github/copilot-instructions.md` loads automatically as custom instructions — core principles and methodology overview
+2. Reference the phase prompt files in `.github/prompts/` from Copilot Chat to work through each phase
+3. Quality gates are manual — use the checklist in the instructions file before moving phases
+
+**What happens when you run Claude Code:**
+
+1. `CLAUDE.md` loads automatically — core principles and methodology overview
+2. Type `/phase-0-discovery` (or any `/phase-*` command) to start that phase
+3. Quality gates are manual — use the checklist in `CLAUDE.md` before moving phases
+
 ## What's in the Box
 
 ```
-.kiro/
+.kiro/                                     # Kiro IDE — full native support
 ├── steering/                              # Always-active AI guidance
 │   ├── 00-modernization-principles.md     # Core principles and interaction style
 │   ├── 01-regulatory-reference.md         # Compliance framework quick reference
@@ -122,6 +142,32 @@ cd my-modernization
     ├── checkpoint-reminder.json           # Pause for human review after each deliverable
     ├── open-questions-tracker.json        # Flag unknowns in deliverables
     └── compliance-check.json              # Validate compliance consistency across documents
+
+.github/                                   # GitHub Copilot (VS Code) — native support
+├── copilot-instructions.md                # Always-on custom instructions (principles + methodology)
+└── prompts/                               # Per-phase prompt files for Copilot Chat
+    ├── phase-0-discovery.prompt.md
+    ├── phase-1-codebase-analysis.prompt.md
+    ├── phase-2-pain-points.prompt.md
+    ├── phase-3-target-architecture.prompt.md
+    ├── phase-4-modernization-plan.prompt.md
+    └── phase-5-supporting-docs.prompt.md
+
+CLAUDE.md                                  # Claude Code — always-on instructions (auto-loaded)
+.claude/                                   # Claude Code — slash commands
+└── commands/                              # Per-phase slash commands (/phase-0-discovery, etc.)
+    ├── phase-0-discovery.md
+    ├── phase-1-codebase-analysis.md
+    ├── phase-2-pain-points.md
+    ├── phase-3-target-architecture.md
+    ├── phase-4-modernization-plan.md
+    └── phase-5-supporting-docs.md
+
+.codex/                                    # Codex — native support
+├── README.md                              # Quick start for Codex users
+├── context/system-instructions.md         # Always-on system instructions
+├── runbooks/phase-workflow.md             # Phase-by-phase runbook
+└── checklists/quality-gates.md            # Manual quality gates
 ```
 
 ## Core Principles
@@ -138,8 +184,8 @@ cd my-modernization
 
 ## Prerequisites
 
-- **[Kiro IDE](https://kiro.dev)** — this kit is built for Kiro's steering files, specs, and hooks. It's the IDE that treats AI-assisted development as a first-class workflow, not a bolted-on autocomplete. The spec-driven development model is what makes this methodology work — structured requirements → design → tasks, with the AI executing and the human reviewing. Other AI IDEs can adapt the methodology (see below), but Kiro is where it shines.
-- **Claude Opus 4.6+** (or newer) — the underlying model matters. The codebase analysis, architecture design, and plan generation require a model that can hold large context, reason about complex systems, and produce correct, idiomatic recommendations across multiple languages and frameworks. Claude Opus 4.6 is what this was developed and tested with. Lesser models will produce lesser plans.
+- **An AI IDE** — this kit ships with native support for [Kiro](https://kiro.dev) (steering/specs/hooks), [GitHub Copilot](https://github.com/features/copilot) in VS Code (custom instructions/prompt files), [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLAUDE.md/slash commands), and [Codex](https://openai.com/index/codex/) (system instructions/runbook). Kiro's spec-driven workflow provides the richest experience (structured requirements → design → tasks with automated hooks), but the methodology works in any AI IDE.
+- **A capable model** — Claude Opus 4.6+ (Kiro), GPT-4o/o1+ (Copilot), or equivalent. The codebase analysis, architecture design, and plan generation require a model that can hold large context and reason about complex systems. Lesser models will produce lesser plans.
 - **Codebase access** — the AI needs to read the actual source code
 - **A domain expert** — someone who understands the business processes. Reviews every deliverable. This is the irreplaceable ingredient.
 - **Time for iteration** — each phase involves analysis → review → correction → revision
@@ -185,20 +231,81 @@ Add these to `.kiro/settings/mcp.json` (workspace-level) or `~/.kiro/settings/mc
 
 ## Adapting This Methodology
 
-This kit is designed for Kiro but the methodology is IDE-agnostic. The steering files are markdown with front-matter that Kiro understands. The specs follow Kiro's requirements/design/tasks structure. The hooks use Kiro's event system. To adapt for another AI IDE:
+This kit ships with native support for four AI IDEs. The methodology is the same — only the delivery mechanism differs:
 
-- Steering files → system prompts or context files
-- Specs → task lists or project plans
-- Hooks → whatever automation the IDE supports (or manual checkpoints)
+| Concept | Kiro (`.kiro/`) | Copilot (`.github/`) | Claude Code (`CLAUDE.md` + `.claude/`) | Codex (`.codex/`) |
+|---|---|---|---|---|
+| Always-on principles | Steering files (auto-loaded) | `copilot-instructions.md` (auto-loaded) | `CLAUDE.md` (auto-loaded) | System instructions (manual load) |
+| Per-phase workflow | Specs (requirements/design/tasks) | Prompt files (`.prompt.md`) | Slash commands (`/phase-*`) | Runbook (manual follow) |
+| Automated guardrails | Hooks (event-driven) | — (manual quality gates) | — (manual quality gates) | — (manual quality gates) |
+| Human review gates | Hook-triggered reminders | Checklist in instructions file | Checklist in CLAUDE.md | Checklist in quality-gates.md |
 
+For other AI IDEs: steering files → system prompts, specs → task lists, hooks → manual checkpoints.
+
+
+## GitHub Copilot Compatibility (VS Code — No Fork Required)
+
+This kit includes a `.github/` compatibility layer for GitHub Copilot in VS Code.
+
+- Copilot reads `.github/copilot-instructions.md` automatically as custom instructions
+- Per-phase prompt files in `.github/prompts/` are invokable in Copilot Chat
+- Same deliverables, same methodology, same quality gates
+
+**Quick start:**
+1. Open this workspace in VS Code with GitHub Copilot enabled
+2. The custom instructions load automatically — they contain the core principles and methodology overview
+3. In Copilot Chat, reference a phase prompt file to start that phase (e.g., type `@workspace` and reference `/prompts/phase-0-discovery.prompt.md`)
+4. Work through phases 0-5 in order, with human review at each checkpoint
+
+**What's different from Kiro:** Copilot doesn't have hooks (automated guardrails), so quality gates are manual — use the checklist in `copilot-instructions.md` before moving to the next phase. Copilot also doesn't have Kiro's spec panel, so the prompt files serve as the phase-by-phase workflow guide.
+
+```
+.github/
+├── copilot-instructions.md              # Always-on custom instructions (principles + methodology)
+└── prompts/                             # Per-phase prompt files for Copilot Chat
+    ├── phase-0-discovery.prompt.md
+    ├── phase-1-codebase-analysis.prompt.md
+    ├── phase-2-pain-points.prompt.md
+    ├── phase-3-target-architecture.prompt.md
+    ├── phase-4-modernization-plan.prompt.md
+    └── phase-5-supporting-docs.prompt.md
+```
+
+## Claude Code Compatibility (No Fork Required)
+
+This kit includes a `CLAUDE.md` + `.claude/` compatibility layer for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (Anthropic's CLI agent).
+
+- `CLAUDE.md` at the project root loads automatically every session — core principles and methodology overview
+- Per-phase slash commands in `.claude/commands/` are invokable as `/phase-0-discovery` through `/phase-5-supporting-docs`
+- Same deliverables, same methodology, same quality gates
+
+**Quick start:**
+1. Open this workspace directory in Claude Code (`claude` from the terminal)
+2. `CLAUDE.md` loads automatically
+3. Type `/phase-0-discovery` to start the Discovery Interview
+4. Work through phases 0-5 in order, with human review at each checkpoint
+
+```
+CLAUDE.md                                # Always-on instructions (auto-loaded every session)
+.claude/
+└── commands/                            # Per-phase slash commands
+    ├── phase-0-discovery.md             # /phase-0-discovery
+    ├── phase-1-codebase-analysis.md     # /phase-1-codebase-analysis
+    ├── phase-2-pain-points.md           # /phase-2-pain-points
+    ├── phase-3-target-architecture.md   # /phase-3-target-architecture
+    ├── phase-4-modernization-plan.md    # /phase-4-modernization-plan
+    └── phase-5-supporting-docs.md       # /phase-5-supporting-docs
+```
 
 ## Codex Compatibility (No Fork Required)
 
-This kit now includes a `.codex/` compatibility layer so you can run the same methodology in Codex without forking the repo.
+This kit includes a `.codex/` compatibility layer so you can run the same methodology in Codex without forking the repo.
 
 - Kiro uses `.kiro/` (steering/specs/hooks)
+- Copilot uses `.github/` (custom instructions/prompt files)
+- Claude Code uses `CLAUDE.md` + `.claude/` (instructions/slash commands)
 - Codex uses `.codex/` (system instructions/runbook/quality gates)
-- Both produce the same deliverables in the workspace root
+- All four produce the same deliverables in the workspace root
 
 Start with `.codex/README.md`, then load `.codex/context/system-instructions.md` and follow `.codex/runbooks/phase-workflow.md`.
 
@@ -214,7 +321,7 @@ A second insight emerged from having all three applications in one workspace: as
 
 MIT. Use it, fork it, improve it, sell consulting services around it. Just don't pretend a prompt alone produces a good modernization plan — the human in the loop is what makes it work.
 
-Built with [Kiro](https://kiro.dev) + [Claude Opus 4.6](https://anthropic.com). If you're modernizing legacy systems without spec-driven AI-assisted development, you're working too hard.
+Built with [Kiro](https://kiro.dev) + [Claude Opus 4.6](https://anthropic.com), with native support for [GitHub Copilot](https://github.com/features/copilot), [Claude Code](https://docs.anthropic.com/en/docs/claude-code), and [Codex](https://openai.com/index/codex/). If you're modernizing legacy systems without AI-assisted development, you're working too hard.
 
 ---
 

@@ -1,7 +1,7 @@
 # Application Modernization Methodology
 ## AI-Assisted Legacy System Transformation — A Practitioner's Framework
 
-*Developed by [Burly Mingo LLC](https://burlymingo.com) using [Kiro IDE](https://kiro.dev) + Claude Opus 4.6*
+*Developed by [Burly Mingo LLC](https://burlymingo.com) — built with [Kiro IDE](https://kiro.dev) + Claude Opus 4.6, with native support for GitHub Copilot (VS Code), Claude Code, and Codex*
 
 ### What This Is
 
@@ -18,7 +18,7 @@ This is not a single prompt. It's a process that produces real engineering deliv
 
 ### Prerequisites
 
-1. **Codebase access.** The AI needs to read the actual source code, configuration files, database schemas, and deployment artifacts. An AI IDE with workspace access is the ideal environment — [Kiro](https://kiro.dev) with its spec-driven workflow is what this methodology was built for and tested with. If the codebase is too large for direct context, see the "Scaling" section for vector DB approaches.
+1. **Codebase access.** The AI needs to read the actual source code, configuration files, database schemas, and deployment artifacts. An AI IDE with workspace access is the ideal environment — [Kiro](https://kiro.dev) with its spec-driven workflow is what this methodology was built for and tested with, but native support is also included for [GitHub Copilot](https://github.com/features/copilot) (VS Code), [Claude Code](https://docs.anthropic.com/en/docs/claude-code), and [Codex](https://openai.com/index/codex/). If the codebase is too large for direct context, see the "Scaling" section for vector DB approaches.
 2. **A domain expert.** Someone who understands the business processes the software supports. Ideally the original developer or a senior user. This person reviews every deliverable and corrects the AI's assumptions. Without this person, the output will be generic and potentially wrong.
 3. **A capable model.** This methodology was developed with Claude Opus 4.6. The codebase analysis, architecture design, and plan generation require a model that can reason about complex systems across large contexts. Lesser models will produce lesser plans.
 4. **Stakeholder access.** The domain expert may not know everything — infrastructure details, licensing costs, compliance requirements, and business priorities may require input from IT, finance, legal, or management.

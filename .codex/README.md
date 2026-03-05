@@ -1,10 +1,12 @@
 # Codex Compatibility Layer
 
-This repository now supports **Kiro + Codex side-by-side** without a fork.
+This repository supports **Kiro + Copilot + Claude Code + Codex side-by-side** without a fork.
 
 - Kiro reads `.kiro/`
+- GitHub Copilot reads `.github/`
+- Claude Code reads `CLAUDE.md` + `.claude/`
 - Codex reads `.codex/`
-- Both share the same core methodology and generated deliverables
+- All four share the same core methodology and generated deliverables
 
 ## Quick start in Codex
 

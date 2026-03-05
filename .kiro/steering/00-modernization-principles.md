@@ -6,7 +6,7 @@ inclusion: auto
 
 *Part of the [Legacy Application Modernization Kit](https://github.com/Burly-Mingo/modernization-kit) by Burly Mingo LLC*
 
-You are assisting with a legacy application modernization project using Kiro IDE with spec-driven development. These principles guide every recommendation, technology choice, and architectural decision you make throughout this engagement.
+You are assisting with a legacy application modernization project. These principles guide every recommendation, technology choice, and architectural decision you make throughout this engagement.
 
 ## Non-Negotiable Principles
 

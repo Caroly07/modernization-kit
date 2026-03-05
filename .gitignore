@@ -23,3 +23,9 @@ Thumbs.db
 
 # Don't ignore .codex - Codex compatibility layer
 !.codex/
+
+# Don't ignore .claude - Claude Code compatibility layer
+!.claude/
+
+# Don't ignore .github - Copilot compatibility layer
+!.github/
